@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: ezbookkeeping
+    runtime: docker
+    plan: free
+    envVars:
+      - key: EBK_GLOBAL_MODE
+        value: production
+      - key: EBK_SERVER_HTTP_PORT
+        value: 8080
+      - key: EBK_DATABASE_TYPE
+        value: postgres
+      - key: EBK_DATABASE_HOST
+        sync: false
+      - key: EBK_DATABASE_NAME
+        value: postgres
+      - key: EBK_DATABASE_USER
+        value: postgres
+      - key: EBK_DATABASE_PASSWD
+        sync: false
+      - key: EBK_DATABASE_SSL_MODE
+        value: require
+      - key: EBK_SECURITY_SECRET_KEY
+        generateValue: true

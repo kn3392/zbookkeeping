@@ -67,6 +67,9 @@ For a full list of features, visit the [Full Feature List](https://ezbookkeeping
 ### Run with Docker
 Visit [Docker Hub](https://hub.docker.com/r/mayswind/ezbookkeeping) to see all images and tags.
 
+### One-Click Deployment
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/mayswind/ezbookkeeping)
+
 **Latest Release:**
 
     $ docker run -p8080:8080 mayswind/ezbookkeeping
