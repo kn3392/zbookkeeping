@@ -68,12 +68,10 @@ export default defineConfig(() => {
     const buildUnixTime = process.env['buildUnixTime'] || '';
     let buildCommitHash = 'unknown';
 
-    if (fs.existsSync(resolve(__dirname, '.git'))) {
-        try {
-            buildCommitHash = git.short();
-        } catch (e) {
-            console.warn('Cannot get git commit hash, use "unknown" instead.');
-        }
+    try {
+        buildCommitHash = git.short();
+    } catch (e) {
+        console.warn('Cannot get git commit hash, use "unknown" instead.');
     }
 
     const options: UserConfig = {
