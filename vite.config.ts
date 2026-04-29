@@ -66,6 +66,13 @@ function injectFramework7CssFile({ htmlFileName, placeHolders }: { htmlFileName:
 export default defineConfig(() => {
     const licenseContent = fs.readFileSync('./LICENSE', { encoding: 'utf-8' });
     const buildUnixTime = process.env['buildUnixTime'] || '';
+    let buildCommitHash = 'unknown';
+
+    try {
+        buildCommitHash = git.short();
+    } catch (e) {
+        console.warn('Cannot get git commit hash, use "unknown" instead.');
+    }
 
     const options: UserConfig = {
         root: SRC_DIR,
@@ -75,7 +82,7 @@ export default defineConfig(() => {
             __EZBOOKKEEPING_IS_PRODUCTION__: process.env['NODE_ENV'] === 'production',
             __EZBOOKKEEPING_VERSION__: JSON.stringify(packageFile.version),
             __EZBOOKKEEPING_BUILD_UNIX_TIME__: JSON.stringify(buildUnixTime),
-            __EZBOOKKEEPING_BUILD_COMMIT_HASH__: JSON.stringify(git.short()),
+            __EZBOOKKEEPING_BUILD_COMMIT_HASH__: JSON.stringify(buildCommitHash),
             __EZBOOKKEEPING_CONTRIBUTORS__: JSON.stringify(contributorsFile),
             __EZBOOKKEEPING_LICENSE__: JSON.stringify(licenseContent),
             __EZBOOKKEEPING_THIRD_PARTY_LICENSES__: JSON.stringify(thirdPartyLicenseFile)
