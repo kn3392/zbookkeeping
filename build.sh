@@ -118,7 +118,11 @@ check_type_dependencies() {
 
 set_build_parameters() {
     VERSION="$(grep '"version": ' package.json | awk -F ':' '{print $2}' | tr -d ' ' | tr -d ',' | tr -d '"')"
-    COMMIT_HASH="$(git rev-parse --short=7 HEAD)"
+    if [ -d ".git" ]; then
+        COMMIT_HASH="$(git rev-parse --short=7 HEAD)"
+    else
+        COMMIT_HASH="unknown"
+    fi
 
     if [ -z "$BUILD_UNIXTIME" ]; then
         BUILD_UNIXTIME="$(date '+%s')"
@@ -175,7 +179,7 @@ build_backend() {
 
 build_frontend() {
     echo "Pulling frontend dependencies..."
-    npm install
+    npm install --legacy-peer-deps
 
     if [ "$NO_LINT" = "0" ]; then
         echo "Executing frontend lint checking..."

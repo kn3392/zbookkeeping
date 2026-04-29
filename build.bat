@@ -112,7 +112,11 @@ goto :pre_parse_args
     set VERSION=%VERSION: =%
     set VERSION=%VERSION:,=%
     set VERSION=%VERSION:"=%
-    for /f %%x in ('git rev-parse --short^=7 HEAD') do set "COMMIT_HASH=%%x"
+    if exist .git (
+        for /f %%x in ('git rev-parse --short^=7 HEAD') do set "COMMIT_HASH=%%x"
+    ) else (
+        set "COMMIT_HASH=unknown"
+    )
 
     if "%BUILD_UNIXTIME%"=="" (
         call :set_unixtime BUILD_UNIXTIME
@@ -184,7 +188,7 @@ goto :pre_parse_args
 :build_frontend
     setlocal enabledelayedexpansion
     echo Pulling frontend dependencies...
-    call npm install
+    call npm install --legacy-peer-deps
 
     if "%NO_LINT%"=="0" (
         echo Executing frontend lint checking...

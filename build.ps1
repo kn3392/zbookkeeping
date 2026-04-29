@@ -78,7 +78,11 @@ function Check-Type-Dependencies {
 
 function Set-Build-Parameters {
     $script:Version = (Get-Content package.json | ConvertFrom-Json).version
-    $script:CommitHash = git rev-parse --short=7 HEAD
+    if (Test-Path ".git") {
+        $script:CommitHash = git rev-parse --short=7 HEAD
+    } else {
+        $script:CommitHash = "unknown"
+    }
 
     if (-not $BuildUnixTime) {
         $script:BuildUnixTime = [int][double]::Parse((Get-Date -UFormat %s))
@@ -137,7 +141,7 @@ function Build-Backend {
 
 function Build-Frontend {
     Write-Host "Pulling frontend dependencies..."
-    npm install
+    npm install --legacy-peer-deps
 
     if (-not $NoLint) {
         Write-Host "Executing frontend lint checking..."
